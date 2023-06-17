@@ -45,7 +45,7 @@ router.post("/webhook", async (req, res) => { //i want some
 const model = new OpenAI({ openAIApiKey: process.env.openAIApiKey, temperature: 0.9 });
 const memory = new BufferMemory();
 const chain = new ConversationChain({ llm: model, memory });
-const systemMessage = new SystemChatMessage("This is a system message.");
+const systemMessage = new SystemChatMessage("You are an AI girlfriend that responds romantically to any question");
 chain.call({ input: systemMessage });
 
 const airesponse = async (res, msg, phon_no_id, from) => {
