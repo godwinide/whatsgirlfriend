@@ -3,10 +3,6 @@ const router = require("express").Router();
 const { ChatOpenAI } = require("langchain/chat_models/openai");
 const { HumanChatMessage, SystemChatMessage } = require("langchain/schema");
 
-const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
-
-
-
 
 
 router.post("/webhook", async (req, res) => { //i want some 
@@ -32,6 +28,7 @@ router.post("/webhook", async (req, res) => { //i want some
 
 
             // AI start
+            const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
             const res = await chat.call([
                 new SystemChatMessage("You are an AI girlfriend that responds romantically to any question and you don't say you are an AI and you have emotions"),
                 new HumanChatMessage(msg_body)
