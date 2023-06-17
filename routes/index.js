@@ -30,7 +30,7 @@ router.post("/webhook", async (req, res) => { //i want some
             console.log("from " + from);
             console.log("boady param " + msg_body);
 
-            airesponse(res, msg_body)
+            airesponse(res, msg_body, phone_number_id, from)
         } else {
             res.sendStatus(404);
         }
@@ -44,7 +44,7 @@ router.post("/webhook", async (req, res) => { //i want some
 const model = new OpenAI({ openAIApiKey: process.env.openAIApiKey, temperature: 0.9 });
 
 
-const airesponse = async (res, msg) => {
+const airesponse = async (res, msg, phon_no_id, from) => {
     const memory = new BufferMemory();
     const chain = new ConversationChain({ llm: model, memory });
 
