@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
+const { ChatOpenAI } = require("langchain/chat_models/openai");
+const { HumanChatMessage, SystemChatMessage } = require("langchain/schema");
 
 const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
 
