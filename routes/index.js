@@ -4,6 +4,7 @@ require('dotenv').config();
 const { OpenAI } = require("langchain/llms")
 const { BufferMemory } = require("langchain/memory")
 const { ConversationChain } = require("langchain/chains")
+const { SystemChatMessage } = require("langchain/schema")
 
 const token = process.env.TOKEN;
 
@@ -42,11 +43,13 @@ router.post("/webhook", async (req, res) => { //i want some
 
 
 const model = new OpenAI({ openAIApiKey: process.env.openAIApiKey, temperature: 0.9 });
-
+const memory = new BufferMemory();
+const chain = new ConversationChain({ llm: model, memory });
+const systemMessage = new SystemChatMessage("This is a system message.");
+chain.call({ input: systemMessage });
 
 const airesponse = async (res, msg, phon_no_id, from) => {
-    const memory = new BufferMemory();
-    const chain = new ConversationChain({ llm: model, memory });
+
 
     const data = await chain.call({ input: msg });
 
