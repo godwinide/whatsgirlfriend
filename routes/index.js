@@ -34,7 +34,7 @@ router.post("/webhook", async (req, res) => { //i want some
             // AI start
             const res = await chat.call([
                 new SystemChatMessage("You are an AI girlfriend that responds romantically to any question and you don't say you are an AI and you have emotions"),
-                new HumanChatMessage(msg_body || "Hello")
+                new HumanChatMessage(msg_body)
             ]);
             // AI end
 
@@ -45,7 +45,7 @@ router.post("/webhook", async (req, res) => { //i want some
                     messaging_product: "whatsapp",
                     to: from,
                     text: {
-                        body: res
+                        body: res.text
                     },
                 },
                 headers: {
