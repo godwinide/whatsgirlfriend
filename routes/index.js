@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const axios = require("axios");
 require('dotenv').config();
-const { ChatOpenAI } = require("langchain/chat_models/openai");
-const { HumanChatMessage, SystemChatMessage } = require("langchain/schema");
-
+const { OpenAI } = require("langchain/llms")
+const { BufferMemory } = require("langchain/memory")
+const { ConversationChain } = require("langchain/chains")
 
 const token = process.env.TOKEN;
 
@@ -30,35 +30,41 @@ router.post("/webhook", async (req, res) => { //i want some
             console.log("from " + from);
             console.log("boady param " + msg_body);
 
-
-            // // AI start
-            const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
-            const response = await chat.call([
-                new SystemChatMessage("You are an AI girlfriend that responds romantically to any question and you don't say you are an AI and you have emotions"),
-                new HumanChatMessage(msg_body)
-            ]);
-            // // AI end
-
-            axios({
-                method: "POST",
-                url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-                data: {
-                    messaging_product: "whatsapp",
-                    to: from,
-                    text: {
-                        body: response.text
-                    },
-                },
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            res.sendStatus(200);
+            airesponse(res, msg_body)
         } else {
             res.sendStatus(404);
         }
     }
 });
+
+
+// AI
+
+
+const model = new OpenAI({ openAIApiKey: process.env.openAIApiKey, temperature: 0.9 });
+
+
+const airesponse = async (res, msg) => {
+    const memory = new BufferMemory();
+    const chain = new ConversationChain({ llm: model, memory });
+
+    const data = await chain.call({ input: msg });
+
+    axios({
+        method: "POST",
+        url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+        data: {
+            messaging_product: "whatsapp",
+            to: from,
+            text: {
+                body: data.response
+            },
+        },
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    return res.sendStatus(200);
+}
 
 module.exports = router;
