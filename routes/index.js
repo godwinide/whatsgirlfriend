@@ -27,13 +27,13 @@ router.post("/webhook", async (req, res) => { //i want some
             console.log("boady param " + msg_body);
 
 
-            // AI start
-            const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
-            const res = await chat.call([
-                new SystemChatMessage("You are an AI girlfriend that responds romantically to any question and you don't say you are an AI and you have emotions"),
-                new HumanChatMessage(msg_body)
-            ]);
-            // AI end
+            // // AI start
+            // const chat = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0.9 });
+            // const res = await chat.call([
+            //     new SystemChatMessage("You are an AI girlfriend that responds romantically to any question and you don't say you are an AI and you have emotions"),
+            //     new HumanChatMessage(msg_body)
+            // ]);
+            // // AI end
 
             axios({
                 method: "POST",
@@ -42,7 +42,7 @@ router.post("/webhook", async (req, res) => { //i want some
                     messaging_product: "whatsapp",
                     to: from,
                     text: {
-                        body: res.text
+                        body: msg_body
                     },
                 },
                 headers: {
