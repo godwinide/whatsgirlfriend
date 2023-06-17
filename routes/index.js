@@ -5,6 +5,9 @@ const { ChatOpenAI } = require("langchain/chat_models/openai");
 const { HumanChatMessage, SystemChatMessage } = require("langchain/schema");
 
 
+const token = process.env.TOKEN;
+
+
 
 router.post("/webhook", async (req, res) => { //i want some 
 

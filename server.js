@@ -8,7 +8,6 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
-const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;//prasath_token
 
 app.listen(process.env.PORT, () => {
