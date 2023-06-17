@@ -30,7 +30,7 @@ router.post("/webhook", async (req, res) => { //i want some
             console.log("from " + from);
             console.log("boady param " + msg_body);
 
-            airesponse(res, msg_body, phone_number_id, from)
+            airesponse(res, msg_body, phon_no_id, from)
         } else {
             res.sendStatus(404);
         }
