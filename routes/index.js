@@ -41,7 +41,6 @@ router.post("/webhook", async (req, res) => { //i want some
 
 // AI
 
-
 const model = new OpenAI({ openAIApiKey: process.env.openAIApiKey, temperature: 0.9 });
 
 
